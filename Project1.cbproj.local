@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2024/11/16 19:08:18.000.367,=C:\Users\theri\OneDrive\Documentos\Embarcadero\Studio\Projects\Project1PCH1.h</Transaction>
+    <Transaction>2024/11/16 19:08:18.000.398,=C:\Users\theri\OneDrive\Documentos\Embarcadero\Studio\Projects\Unit1.cpp</Transaction>
+    <Transaction>2024/11/17 00:48:54.000.398,C:\Users\theri\OneDrive\Documentos\Projetos\Faculdade\Análise de Algoritmos\Projeto Algoritmos\Unit1.dfm=C:\Users\theri\OneDrive\Documentos\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
+    <Transaction>2024/11/17 00:48:54.000.398,C:\Users\theri\OneDrive\Documentos\Projetos\Faculdade\Análise de Algoritmos\Projeto Algoritmos\Unit1.h=C:\Users\theri\OneDrive\Documentos\Embarcadero\Studio\Projects\Unit1.h</Transaction>
+    <Transaction>2024/11/17 00:48:54.000.398,C:\Users\theri\OneDrive\Documentos\Projetos\Faculdade\Análise de Algoritmos\Projeto Algoritmos\Unit1.cpp=C:\Users\theri\OneDrive\Documentos\Embarcadero\Studio\Projects\Unit1.cpp</Transaction>
+    <Transaction>2024/11/17 00:50:24.000.525,C:\Users\theri\OneDrive\Documentos\Projetos\Faculdade\Análise de Algoritmos\Projeto Algoritmo Gráfico\Project1PCH1.h=C:\Users\theri\OneDrive\Documentos\Embarcadero\Studio\Projects\Project1PCH1.h</Transaction>
+    <Transaction>2024/11/17 00:50:29.000.475,C:\Users\theri\OneDrive\Documentos\Projetos\Faculdade\Análise de Algoritmos\Projeto Algoritmo Gráfico\Project1.cbproj=C:\Users\theri\OneDrive\Documentos\Embarcadero\Studio\Projects\Project1.cbproj</Transaction>
+    <Transaction>2024/11/19 01:44:04.000.712,=C:\Users\theri\OneDrive\Documentos\Projetos\Faculdade\Análise de Algoritmos\Projeto Algoritmos\Unit2.cpp</Transaction>
+    <Transaction>2024/11/19 01:44:31.000.523,C:\Users\theri\OneDrive\Documentos\Projetos\Faculdade\Análise de Algoritmos\Projeto Algoritmos\FormOpcoes.dfm=C:\Users\theri\OneDrive\Documentos\Projetos\Faculdade\Análise de Algoritmos\Projeto Algoritmos\Unit2.dfm</Transaction>
+    <Transaction>2024/11/19 01:44:31.000.523,C:\Users\theri\OneDrive\Documentos\Projetos\Faculdade\Análise de Algoritmos\Projeto Algoritmos\FormOpcoes.cpp=C:\Users\theri\OneDrive\Documentos\Projetos\Faculdade\Análise de Algoritmos\Projeto Algoritmos\Unit2.cpp</Transaction>
+    <Transaction>2024/11/19 01:44:31.000.523,C:\Users\theri\OneDrive\Documentos\Projetos\Faculdade\Análise de Algoritmos\Projeto Algoritmos\FormOpcoes.h=C:\Users\theri\OneDrive\Documentos\Projetos\Faculdade\Análise de Algoritmos\Projeto Algoritmos\Unit2.h</Transaction>
+    <Transaction>2024/11/19 12:06:32.000.671,=C:\Users\theri\OneDrive\Documentos\Projetos\Faculdade\Análise de Algoritmos\Projeto Algoritmos\Unit2.cpp</Transaction>
+    <Transaction>2024/11/19 12:17:33.000.914,C:\Users\theri\OneDrive\Documentos\Projetos\Faculdade\Análise de Algoritmos\Projeto Algoritmos\Unit2.h=C:\Users\theri\OneDrive\Documentos\Projetos\Faculdade\Análise de Algoritmos\Projeto Algoritmos\UFormGraficos.h</Transaction>
+    <Transaction>2024/11/19 12:17:33.000.914,C:\Users\theri\OneDrive\Documentos\Projetos\Faculdade\Análise de Algoritmos\Projeto Algoritmos\Unit2.dfm=C:\Users\theri\OneDrive\Documentos\Projetos\Faculdade\Análise de Algoritmos\Projeto Algoritmos\UFormGraficos.dfm</Transaction>
+    <Transaction>2024/11/19 12:17:33.000.914,C:\Users\theri\OneDrive\Documentos\Projetos\Faculdade\Análise de Algoritmos\Projeto Algoritmos\Unit2.cpp=C:\Users\theri\OneDrive\Documentos\Projetos\Faculdade\Análise de Algoritmos\Projeto Algoritmos\UFormGraficos.cpp</Transaction>
+  </Transactions>
+</BorlandProject>

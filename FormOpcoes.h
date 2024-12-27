@@ -1,0 +1,44 @@
+	//---------------------------------------------------------------------------
+
+#ifndef FormOpcoesH
+#define FormOpcoesH
+//---------------------------------------------------------------------------
+#include <System.Classes.hpp>
+#include <Vcl.Controls.hpp>
+#include <Vcl.StdCtrls.hpp>
+#include <Vcl.Forms.hpp>
+#include <Vcl.ExtCtrls.hpp>
+//---------------------------------------------------------------------------
+class TFormOptions : public TForm
+{
+__published:	// IDE-managed Components
+	TGroupBox *GroupBox1;
+	TRadioGroup *rgMaxValue;
+	TRadioButton *btnGrande;
+	TRadioButton *btnMedio;
+	TRadioButton *btnPequeno;
+	TGroupBox *GroupBox2;
+	TRadioGroup *rgCompareSpeed;
+	TRadioButton *btncompLenta;
+	TRadioButton *btncompNormal;
+	TRadioButton *btncompRapida;
+	TRadioGroup *rgSwapSpeed;
+	TRadioButton *btntrocaLenta;
+	TRadioButton *btntrocaRapida;
+	TRadioButton *btntrocaNormal;
+	TLabel *Label1;
+	TComboBox *ComboBox1;
+	TButton *Button1;
+	TButton *Button2;
+	TButton *Button3;
+	void __fastcall evCancelar(TObject *Sender);
+	void __fastcall evConfirmar(TObject *Sender);
+	void __fastcall evResetar(TObject *Sender);
+private:	// User declarations
+public:		// User declarations
+	__fastcall TFormOptions(TComponent* Owner);
+};
+//---------------------------------------------------------------------------
+extern PACKAGE TFormOptions *FormOptions;
+//---------------------------------------------------------------------------
+#endif

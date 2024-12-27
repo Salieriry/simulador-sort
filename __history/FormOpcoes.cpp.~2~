@@ -1,0 +1,21 @@
+//---------------------------------------------------------------------------
+
+#include <vcl.h>
+#pragma hdrstop
+
+#include "FormOpcoes.h"
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+#pragma resource "*.dfm"
+TFormOptions *FormOptions;
+//---------------------------------------------------------------------------
+__fastcall TFormOptions::TFormOptions(TComponent* Owner)
+	: TForm(Owner)
+{
+}
+//---------------------------------------------------------------------------
+void __fastcall TFormOptions::evCancelar(TObject *Sender)
+{
+    this->Close();
+}
+//---------------------------------------------------------------------------

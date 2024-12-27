@@ -1,0 +1,41 @@
+#include <vcl.h>
+#pragma hdrstop
+
+#include "UFormGraficos.h"
+#include "Unit1.h"
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+#pragma resource "*.dfm"
+TFormGraficos *FormGraficos;
+//---------------------------------------------------------------------------
+__fastcall TFormGraficos::TFormGraficos(TComponent* Owner)
+    : TForm(Owner)
+{
+}
+
+void TFormGraficos::exibirEstatisticas(Estatisticas estatisticas[]) {
+    // Limpar gráficos anteriores
+    ChartComparacoes->Series[0]->Clear();
+    ChartTrocas->Series[0]->Clear();
+    ChartTempo->Series[0]->Clear();
+
+    // Nomes dos algoritmos
+    String algoritmos[] = { "BubbleSort", "InsertionSort", "ShellSort", "SelectionSort",
+                            "MergeSort", "QuickSort", "HeapSort" };
+
+    // Cor personalizada
+    TColor corPersonalizada = TColor(RGB(179, 89, 255));
+
+    for (int i = 0; i < 7; i++) {
+        // Adiciona os valores ao gráfico de comparações com a cor personalizada
+        ChartComparacoes->Series[0]->Add(estatisticas[i].comparacoes, algoritmos[i], corPersonalizada);
+
+        // Adiciona os valores ao gráfico de trocas com a cor personalizada
+        ChartTrocas->Series[0]->Add(estatisticas[i].trocas, algoritmos[i], corPersonalizada);
+
+        // Adiciona os valores ao gráfico de tempo com a cor personalizada
+        ChartTempo->Series[0]->Add(estatisticas[i].tempoExecucao, algoritmos[i], corPersonalizada);
+    }
+}
+
+

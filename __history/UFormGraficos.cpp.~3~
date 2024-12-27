@@ -1,0 +1,30 @@
+#include <vcl.h>
+#pragma hdrstop
+
+#include "UFormGraficos.h"
+#include "Unit1.h"
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+#pragma resource "*.dfm"
+TFormGraficos *FormGraficos;
+//---------------------------------------------------------------------------
+__fastcall TFormGraficos::TFormGraficos(TComponent* Owner)
+    : TForm(Owner)
+{
+}
+
+void TFormGraficos::exibirEstatisticas(Estatisticas estatisticas[]) {
+    ChartComparacoes->Series[0]->Clear();
+    ChartTrocas->Series[0]->Clear();
+    ChartTempo->Series[0]->Clear();
+
+    String algoritmos[] = { "BubbleSort", "InsertionSort", "ShellSort", "SelectionSort",
+                            "MergeSort", "QuickSort", "HeapSort" };
+
+    for (int i = 0; i < 7; i++) {
+        ChartComparacoes->Series[0]->Add(estatisticas[i].comparacoes, algoritmos[i], clBlue);
+        ChartTrocas->Series[0]->Add(estatisticas[i].trocas, algoritmos[i], clGreen);
+        ChartTempo->Series[0]->Add(estatisticas[i].tempoExecucao, algoritmos[i], clRed);
+    }
+}
+

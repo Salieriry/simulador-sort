@@ -1,0 +1,507 @@
+#include <vcl.h>
+#include <time.h>
+#include <algorithm>
+#pragma hdrstop
+
+#include "Unit1.h"
+#include "FormOpcoes.h"
+#include "UFormGraficos.h"
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+#pragma resource "*.dfm"
+TForm1 *Form1;
+
+// Variáveis globais
+int vetor[10000], vetor2[10000], cores[10000], pos, aux, aux2, compara, troca, x, i, j, testa, d;
+int ms = 1;
+boolean preenchido = false, ordenado = false;
+clock_t inicio, fim;
+float tempo;
+
+void atualizarGrafico(int vetor[], int pos, TChart *chart, TBarSeries *series) {
+	series->Clear();
+    for (int i = 0; i < pos; ++i) {
+        series->AddXY(i, vetor[i], "", cores[i]);
+    }
+    chart->Repaint();
+	Application->ProcessMessages(); // Permite que a interface continue responsiva
+}
+
+void delay() {
+	Sleep(ms);
+}
+
+// Algoritmos de Busca
+int linearSearch(int vetor[], int pos, int valor, int &comparar) {
+	comparar = 0; // Reinicia contagem de comparações
+	for (i = 0; i < pos; ++i) {
+		comparar++;
+		delay();
+        if (vetor[i] == valor) {
+            return i; // Retorna a posição encontrada
+        }
+    }
+    return -1; // Valor não encontrado
+}
+
+int binarySearch(int vetor[], int low, int high, int valor, int &comparar) {
+	comparar = 0; // Reinicia contagem de comparações
+    while (low <= high) {
+		int mid = low + (high - low) / 2;
+        delay();
+		comparar++;
+        if (vetor[mid] == valor) {
+            return mid; // Valor encontrado
+        } else if (vetor[mid] < valor) {
+            low = mid + 1; // Busca no lado direito
+        } else {
+            high = mid - 1; // Busca no lado esquerdo
+        }
+    }
+    return -1; // Valor não encontrado
+}
+
+
+
+// Algoritmos de ordenação
+void bubbleSort(int vetor[], int pos, TChart *chart, TBarSeries *series) {
+    compara = troca = 0;
+    inicio = clock();
+
+    for (int i = 0; i < pos; ++i) {
+        for (int j = 0; j < pos - i - 1; ++j) {
+            compara++;
+            if (vetor[j] > vetor[j + 1]) {
+				std::swap(vetor[j], vetor[j + 1]);
+                troca++;
+                atualizarGrafico(vetor, pos, chart, series);
+                delay();
+            }
+        }
+    }
+
+    fim = clock();
+    tempo = ((float)(fim - inicio)) / CLOCKS_PER_SEC;
+}
+
+void insertionSort(int vetor[], int pos, TChart *chart, TBarSeries *series) {
+    compara = troca = 0;
+    inicio = clock();
+
+    for (int i = 1; i < pos; ++i) {
+        int key = vetor[i];
+        int j = i;
+        while (j > 0) {
+            compara++;
+            if (vetor[j - 1] > key) {
+                vetor[j] = vetor[j - 1];
+                troca++;
+                j--;
+                atualizarGrafico(vetor, pos, chart, series);
+                delay();
+            } else {
+                break;
+            }
+        }
+        vetor[j] = key;
+        atualizarGrafico(vetor, pos, chart, series);
+    }
+
+    fim = clock();
+    tempo = ((float)(fim - inicio)) / CLOCKS_PER_SEC;
+}
+
+void selectionSort(int vetor[], int pos, TChart *chart, TBarSeries *series) {
+    compara = troca = 0;
+    inicio = clock();
+
+    for (int i = 0; i < pos - 1; ++i) {
+        int minIdx = i;
+        for (int j = i + 1; j < pos; ++j) {
+            compara++;
+            if (vetor[j] < vetor[minIdx]) {
+                minIdx = j;
+            }
+        }
+        if (minIdx != i) {
+            std::swap(vetor[i], vetor[minIdx]);
+            troca++;
+            atualizarGrafico(vetor, pos, chart, series);
+            delay();
+        }
+    }
+
+    fim = clock();
+    tempo = ((float)(fim - inicio)) / CLOCKS_PER_SEC;
+}
+
+void merge(int vetor[], int left, int mid, int right, TChart *chart, TBarSeries *series) {
+	int n1 = mid - left + 1, n2 = right - mid;
+    int* L = new int[n1];
+    int* R = new int[n2];
+
+    for (int i = 0; i < n1; ++i) L[i] = vetor[left + i];
+    for (int i = 0; i < n2; ++i) R[i] = vetor[mid + 1 + i];
+
+    int i = 0, j = 0, k = left;
+    while (i < n1 && j < n2) {
+        compara++;
+        vetor[k++] = (L[i] <= R[j]) ? L[i++] : R[j++];
+        troca++;
+        atualizarGrafico(vetor, right + 1, chart, series);
+        delay();
+    }
+    while (i < n1) {
+        vetor[k++] = L[i++];
+        troca++;
+        atualizarGrafico(vetor, right + 1, chart, series);
+        delay();
+    }
+    while (j < n2) {
+        vetor[k++] = R[j++];
+        troca++;
+        atualizarGrafico(vetor, right + 1, chart, series);
+        delay();
+    }
+
+    delete[] L;
+    delete[] R;
+}
+
+void mergeSort(int vetor[], int left, int right, TChart *chart, TBarSeries *series) {
+	compara = troca = 0; // Resetar contadores
+	inicio = clock();    // Iniciar cronômetro
+
+    if (left < right) {
+        int mid = left + (right - left) / 2;
+        mergeSort(vetor, left, mid, chart, series);
+        mergeSort(vetor, mid + 1, right, chart, series);
+        merge(vetor, left, mid, right, chart, series);
+	}
+
+    fim = clock();       // Parar cronômetro
+    tempo = ((float)(fim - inicio)) / CLOCKS_PER_SEC;
+}
+
+void quickSort(int vetor[], int low, int high, TChart *chart, TBarSeries *series) {
+    if (low == 0 && high == pos - 1) {
+        compara = troca = 0; // Resetar contadores
+        inicio = clock();    // Iniciar cronômetro
+	}
+
+    if (low < high) {
+        int pivot = vetor[high];
+        int i = low;
+        for (int j = low; j < high; ++j) {
+            compara++;
+            if (vetor[j] <= pivot) {
+                std::swap(vetor[i], vetor[j]);
+                troca++;
+                i++;
+            }
+        }
+        std::swap(vetor[i], vetor[high]);
+        troca++;
+        atualizarGrafico(vetor, high + 1, chart, series);
+        delay();
+
+        quickSort(vetor, low, i - 1, chart, series);
+		quickSort(vetor, i + 1, high, chart, series);
+	}
+
+    if (low == 0 && high == pos - 1) {
+        fim = clock();       // Parar cronômetro
+        tempo = ((float)(fim - inicio)) / CLOCKS_PER_SEC;
+	}
+
+}
+
+void heapify(int vetor[], int pos, int i, TChart *chart, TBarSeries *series) {
+    int largest = i, left = 2 * i + 1, right = 2 * i + 2;
+    if (left < pos) {
+        compara++;
+        if (vetor[left] > vetor[largest]) largest = left;
+    }
+    if (right < pos) {
+        compara++;
+        if (vetor[right] > vetor[largest]) largest = right;
+    }
+
+    if (largest != i) {
+        std::swap(vetor[i], vetor[largest]);
+        troca++;
+        atualizarGrafico(vetor, pos, chart, series);
+        delay();
+        heapify(vetor, pos, largest, chart, series);
+    }
+}
+
+void heapSort(int vetor[], int pos, TChart *chart, TBarSeries *series) {
+    compara = troca = 0;
+    inicio = clock();
+
+    for (int i = pos / 2 - 1; i >= 0; --i) {
+        heapify(vetor, pos, i, chart, series);
+    }
+    for (int i = pos - 1; i > 0; --i) {
+        std::swap(vetor[0], vetor[i]);
+        troca++;
+        atualizarGrafico(vetor, pos, chart, series);
+        delay();
+        heapify(vetor, i, 0, chart, series);
+    }
+
+    fim = clock();
+    tempo = ((float)(fim - inicio)) / CLOCKS_PER_SEC;
+}
+
+//---------------------------------------------------------------------------
+__fastcall TForm1::TForm1(TComponent* Owner)
+	: TForm(Owner) {
+
+	}
+
+// Botão para ordenar os valores
+void __fastcall TForm1::evOrdenarValores(TObject *Sender) {
+    int selectedIndex = cbSort->ItemIndex;
+
+	if (selectedIndex < 0 || selectedIndex > 5) {
+		ShowMessage("Selecione um algoritmo válido!");
+		return;
+	}
+
+	if (preenchido) {
+
+		switch (selectedIndex) {
+			case 0:
+				bubbleSort(vetor, pos, Chart1, Series1);
+				reResultados->Lines->Add("Método BubbleSort - Comparações: " +
+					IntToStr(compara) + " | Trocas: " + IntToStr(troca) +
+					" | Tempo de execução: " + FloatToStr(tempo) + " segundos");
+				break;
+			case 1:
+				insertionSort(vetor, pos, Chart1, Series1);
+				reResultados->Lines->Add("Método InsertionSort - Comparações: " +
+					IntToStr(compara) + " | Trocas: " + IntToStr(troca) +
+					" | Tempo de execução: " + FloatToStr(tempo) + " segundos");
+				break;
+			case 2:
+				selectionSort(vetor, pos, Chart1, Series1);
+				reResultados->Lines->Add("Método SelectionSort - Comparações: " +
+					IntToStr(compara) + " | Trocas: " + IntToStr(troca) +
+					" | Tempo de execução: " + FloatToStr(tempo) + " segundos");
+				break;
+			case 3:
+				tempo = 0;
+				mergeSort(vetor, 0, pos - 1, Chart1, Series1);
+				reResultados->Lines->Add("Método MergeSort - Comparações: " +
+					IntToStr(compara) + " | Trocas: " + IntToStr(troca) +
+					" | Tempo de execução: " + FloatToStr(tempo) + " segundos");
+				break;
+			case 4:
+				quickSort(vetor, 0, pos - 1, Chart1, Series1);
+				reResultados->Lines->Add("Método QuickSort - Comparações: " +
+					IntToStr(compara) + " | Trocas: " + IntToStr(troca) +
+					" | Tempo de execução: " + FloatToStr(tempo) + " segundos");
+				break;
+			case 5:
+				heapSort(vetor, pos, Chart1, Series1);
+				reResultados->Lines->Add("Método HeapSort - Comparações: " +
+					IntToStr(compara) + " | Trocas: " + IntToStr(troca) +
+					" | Tempo de execução: " + FloatToStr(tempo) + " segundos");
+				break;
+		}
+
+		tbComparacao->Text = IntToStr(compara);
+		tbTrocas->Text = IntToStr(troca);
+		ordenado = true;
+
+
+	} else {
+		ShowMessage("Gráfico não preenchido.");
+	}
+
+
+}
+
+// Botão para gerar novos valores
+void __fastcall TForm1::evGerarValores(TObject *Sender) {
+
+
+	if (((StrToInt(tbValor->Text)) < 10) || ((StrToInt(tbValor->Text)) > 225)) {
+		ShowMessage("Por favor, insira um valor entre 10 e 225.");
+		return;
+	}
+
+	pos = StrToIntDef(tbValor->Text, -1);
+    Series1->Clear();
+
+    for (i = 0; i < pos; ++i) {
+		cores[i] = Random(65000);
+        vetor[i] = Random(500);
+		vetor2[i] = vetor[i];
+		Series1->AddXY(i, vetor2[i], "", cores[i]);
+    }
+
+	preenchido = true;
+    Chart1->Repaint();
+	ShowMessage("Gráfico atualizado com " + IntToStr(pos) + " valores.");
+	ordenado = false;
+}
+
+// Botão para restaurar os valores originais
+void __fastcall TForm1::evTrocarOriginal(TObject *Sender) {
+    for (int i = 0; i < pos; ++i) {
+        vetor[i] = vetor2[i];
+    }
+	atualizarGrafico(vetor, pos, Chart1, Series1);
+	ordenado = false;
+    ShowMessage("Valores restaurados para o original.");
+}
+
+// evento para impedir dígitos não permitidos
+void __fastcall TForm1::evApenasNumeros(TObject *Sender, System::WideChar &Key)
+{
+	if (!isdigit(Key) && Key != VK_BACK) {
+
+		Key = 0;
+
+	}
+}
+void __fastcall TForm1::evLimpar(TObject *Sender)
+{
+	Series1->Clear();
+	reResultados->Lines->Clear();
+	tbComparacao->Clear();
+	tbTrocas->Clear();
+	preenchido = false;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::evSair(TObject *Sender)
+{
+    this->Close();
+}
+//---------------------------------------------------------------------------
+
+
+void __fastcall TForm1::evAtualizarVelocidade(TObject *Sender)
+{
+	if (((StrToInt(tbVelocidade->Text)) < 0) || ((StrToInt(tbVelocidade->Text)) > 1000)) {
+		ShowMessage("Por favor, insira um valor entre 0ms e 1000ms.");
+		return;
+	}
+
+	ms = StrToIntDef(tbVelocidade->Text, 1);
+}
+//---------------------------------------------------------------------------
+
+
+void __fastcall TForm1::evBuscarValor(TObject *Sender)
+{
+	if (!preenchido) {
+		ShowMessage("Gráfico não preenchido.");
+		return;
+	}
+
+	int valor = StrToIntDef(tbBusca->Text, -1); // Valor a ser buscado
+	if (valor < 0) {
+		ShowMessage("Por favor, insira um valor válido para buscar.");
+		return;
+	}
+
+	int resultado = -1;
+	int comparar = 0;
+	clock_t inicio, fim;
+    float tempo;
+
+	switch (cbBusca->ItemIndex) { // Verifica o índice da busca selecionada
+        case 0: // Busca Linear
+            inicio = clock();
+			resultado = linearSearch(vetor, pos, valor, comparar);
+            fim = clock();
+            tempo = ((float)(fim - inicio)) / CLOCKS_PER_SEC;
+
+			if (resultado != -1) {
+			   reResultados->Lines->Add("Método LinearSearch - Comparações: " +
+				IntToStr(comparar) + " | Tempo de execução: " +
+				FloatToStr(tempo) + " segundos | Resultado: " +
+				 "Valor encontrado na posição " + IntToStr(resultado));
+			}
+			else {
+			  reResultados->Lines->Add("Método LinearSearch - Comparações: " +
+				IntToStr(comparar) + " | Tempo de execução: " +
+				FloatToStr(tempo) + " segundos | Resultado: " +
+				 "Valor não encontrado. ");
+			}
+
+			break;
+
+        case 1: // Busca Binária
+            if (!ordenado) {
+                ShowMessage("Vetor não está ordenado. Ordene o vetor antes de realizar a busca binária.");
+                return;
+			}
+            inicio = clock();
+			resultado = binarySearch(vetor, 0, pos - 1, valor, comparar);
+            fim = clock();
+            tempo = ((float)(fim - inicio)) / CLOCKS_PER_SEC;
+
+
+			if (resultado != -1) {
+			   reResultados->Lines->Add("Método BinarySearch - Comparações: " +
+				IntToStr(comparar) + " | Tempo de execução: " +
+				FloatToStr(tempo) + " segundos | Resultado: " +
+				 "Valor encontrado na posição " + IntToStr(resultado));;
+			}
+			else {
+			  reResultados->Lines->Add("Método LinearSearch - Comparações: " +
+				IntToStr(comparar) + " | Tempo de execução: " +
+				FloatToStr(tempo) + " segundos | Resultado: " +
+				 "Valor não encontrado. ");
+			}
+
+            break;
+
+        default:
+            ShowMessage("Selecione um algoritmo de busca válido!");
+            return;
+	}
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::evMostrarValores(TObject *Sender)
+{
+	static bool valoresVisiveis = true; // Estado inicial: valores visíveis
+
+    valoresVisiveis = !valoresVisiveis; // Alterna o estado
+
+    Series1->Marks->Visible = valoresVisiveis; // Exibe ou oculta os valores
+
+    if (valoresVisiveis) {
+        ShowMessage("Valores agora estão visíveis.");
+    } else {
+        ShowMessage("Valores agora estão ocultos.");
+	}
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::evAbrirOpcoes(TObject *Sender)
+{
+  //	ShowMessage("Inicializando formulário...");
+	TFormOptions *formOptions = new TFormOptions(this);
+
+	if (formOptions->Visible) {
+    	formOptions->Hide();
+	}
+
+  //	ShowMessage("Formulário inicializado. Abrindo...");
+	formOptions->ShowModal();
+  //	ShowMessage("Formulário fechado.");
+	delete formOptions;
+
+
+}
+//---------------------------------------------------------------------------
+

@@ -1,0 +1,67 @@
+//---------------------------------------------------------------------------
+
+#include <vcl.h>
+#pragma hdrstop
+
+#include "FormOpcoes.h"
+#include "Unit1.h"
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+#pragma resource "*.dfm"
+TFormOptions *FormOptions;
+//---------------------------------------------------------------------------
+__fastcall TFormOptions::TFormOptions(TComponent* Owner)
+	: TForm(Owner)
+{
+
+ // Carregar as configurações globais nos RadioButtons
+	if (delayCompare == 1000) btncompLenta->Checked = true;
+	else if (delayCompare == 100) btncompNormal->Checked = true;
+	else btncompRapida->Checked = true;
+
+	if (delaySwap == 1000) btntrocaLenta->Checked = true;
+	else if (delaySwap == 100) btntrocaNormal->Checked = true;
+	else btntrocaRapida->Checked = true;
+
+	if (maxVal == 1000) btnGrande->Checked = true;
+	else if (maxVal == 100) btnMedio->Checked = true;
+	else btnPequeno->Checked = true;
+
+}
+//---------------------------------------------------------------------------
+void __fastcall TFormOptions::evCancelar(TObject *Sender)
+{
+    this->Close();
+}
+//---------------------------------------------------------------------------
+void __fastcall TFormOptions::evConfirmar(TObject *Sender)
+{
+// Atualizar as variáveis globais com base nos RadioButtons selecionados
+	if (btncompLenta->Checked) delayCompare = 1000;
+	else if (btncompNormal->Checked) delayCompare = 100;
+	else delayCompare = 1;
+
+	if (btntrocaLenta->Checked) delaySwap = 1000;
+	else if (btntrocaNormal->Checked) delaySwap = 100;
+    else delaySwap = 1;
+
+	if (btnGrande->Checked) maxVal = 1000;
+	else if (btnMedio->Checked) maxVal = 100;
+    else maxVal = 10;
+
+    ShowMessage("Configurações atualizadas com sucesso!");
+	Close();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TFormOptions::evResetar(TObject *Sender)
+{
+	btncompNormal->Checked = true;
+	btntrocaNormal->Checked = true;
+	btnMedio->Checked = true;
+	delayCompare = 100;
+	delaySwap = 100;
+	maxVal = 100;
+}
+//---------------------------------------------------------------------------
+
